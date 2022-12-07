@@ -6,12 +6,7 @@
       </li>
       <li class="nav-item">
         <% if user_signed_in? %>
-          <%= link_to "My Books", books_path, class: "nav-link" %>
-        <% end %>
-      </li>
-      <li class="nav-item">
-        <% if user_signed_in? %>
-          <%= link_to "Upload CSV", csv_form_path, class: "nav-link" %>
+          <%= link_to "Upload CSV", new_csv_file_path, class: "nav-link" %>
         <% end %>
       </li>             
       <li class="nav-item">
