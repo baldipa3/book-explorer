@@ -2,7 +2,7 @@
   <h2><%= flash[:messages] %></h2>
 <% end %>
 
-<%= form_with model: @csv_file do |f| %>
+<%= form_with url: csv_files_path do |f| %>
   <div class="container">
     <div class="col-md-6 offset-3 mt-3 session-margin">
       <div class="login-form">
