@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="row py-4">
+    <div class="col">
+      <h1>CSV File: <%= @csv_file.name %></h1>
+      <% @csv_file.books.each do |book| %>
+        <ul>
+          <li>Book title: <%= book.title %></li>
+          <li>Book Author: <%= book.author %></li>
+          <li>Publisher Name: <%= book.publisher_name %></li>
+          <li>Date Published: <%= book.date_published %></li>
+        </ul>
+      <% end %>
+    </div>
+  </div>
+</div>

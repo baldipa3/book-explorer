@@ -1,8 +1,8 @@
 module Errors
   class ValidationError < StandardError
-    def initialize(book)
+    def initialize(id)
       super
-      @book = book
+      @id = id
     end
 
     def message

@@ -1,0 +1,16 @@
+<div class="contain">
+  <div class="flex">
+    <ul>
+      <% @csv_files.each do |file| %>
+        <div class="col-xs-12 col-sm-6 col-lg-4">
+            <div class="card-description">
+                <li><%= file.name %></li>
+            </div>
+            <div class="card-link">
+              <%= link_to "Show Book", csv_file_path(file) %>
+            </div>
+        </div>
+      <% end %>
+    </ul>
+  </div>
+</div>

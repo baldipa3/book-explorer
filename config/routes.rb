@@ -3,5 +3,5 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { registrations: 'users/registrations' }
 
-  resources :csv_files, only: [:new, :create]
+  resources :csv_files, only: [:new, :create, :show, :index]
 end
