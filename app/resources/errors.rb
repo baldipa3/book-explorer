@@ -11,13 +11,13 @@ module Errors
   end
 
   class ValidationError < StandardError
-    def initialize(book)
+    def initialize(id)
       super
-      @book = book
+      @id = id
     end
 
     def messages
-      "#{@book.title} with book_id: #{@book.book_id} is already Uploaded"
+      "A book with book_id: #{@id} is already Uploaded"
     end
   end
 end

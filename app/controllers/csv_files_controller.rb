@@ -1,5 +1,14 @@
 class CsvFilesController < ApplicationController
   include Errors
+  include ExternalServices
+
+  def index
+    @csv_files = CsvFile.all
+  end
+
+  def show
+    @csv_file = current_user.csv_files.find(params[:id])
+  end
 
   def new
   end
@@ -9,20 +18,22 @@ class CsvFilesController < ApplicationController
     
     begin
       books_attributes = CsvBookParser.new(csv_file_params[:file]).parse_input
-      persist_books(book_attributes)
-    rescue MissingAttributeError => e
-      return error_message(e)
+      valid_books?(books_attributes)
     rescue ValidationError => e
-      return error_message(e)
+      flash.now[:messages] = e.messages
+      return render :new
     end
-
-    raise
-    csv_file = CsvFile.new(csv_file_attributes)
-
+    
     @uploader.store!(csv_file_params[:file])
 
+    @csv_file = CsvFile.new(csv_file_attributes)
+    @csv_file.save
+    
+    RequestBin.send_notification(@uploader.url)
+    
+    persist_books(books_attributes)
 
-    csv_file.save
+    redirect_to csv_file_path(@csv_file)
   end
 
   private
@@ -39,20 +50,20 @@ class CsvFilesController < ApplicationController
     }
   end
 
+  def valid_books?(attrs)
+    attrs.each do |attr|
+      book = Book.find_by book_id: attr[:book_id]
+
+      raise ValidationError.new(attr[:book_id]) if book
+    end
+    true
+  end
+
   def persist_books(books_attributes)
     books_attributes.each do |book_attrs|
       book = Book.new(book_attrs)
-  
-      if book.save
-        next
-      else
-        raise ValidationError.new(book)
-      end
+      book.csv_file = @csv_file
+      book.save
     end
-  end
-
-  def error_message(e)
-    flash.now[:messages] = e.messages
-    return render :new  
   end
 end
