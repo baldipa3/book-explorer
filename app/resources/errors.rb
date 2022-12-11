@@ -1,18 +1,18 @@
 module Errors
+  class MissingHeadersError < StandardError
+    def message
+      "Headers are missing for this file"
+    end
+  end
+
   class ValidationError < StandardError
-    def initialize(book)
+    def initialize(id)
       super
-      @book = book
+      @id = id
     end
 
     def message
       "A book with book_id: #{@id} is already Uploaded"
-    end
-  end
-
-  class MissingHeadersError < StandardError
-    def message
-      "Headers are missing for this file"
     end
   end
 end
