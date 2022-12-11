@@ -10,10 +10,12 @@ class CsvFilesController < ApplicationController
     begin
       books_attributes = CsvBookParser.new(csv_file_params[:file]).parse_input
       persist_books(book_attributes)
-    rescue MissingAttributeError => e
-      return error_message(e)
     rescue ValidationError => e
-      return error_message(e)
+      flash.now[:messages] = e.message
+      return render :new
+    rescue MissingHeadersError => e
+      flash.now[:messages] = e.message
+      return render :new
     end
 
     raise
